@@ -1,0 +1,27 @@
+#!/bin/sh
+
+author=$2
+_size=$3
+size=${_size:=5}
+svn log -v | perl -e '
+my $author=shift;
+my $size=shift;
+${n}=0; 
+${flag}=0;
+for(<>){
+        if(/^r\d+.*?${author}.*?$/){
+                #print "open flag", $_;
+                ${flag}=1;
+                ${n}++;
+                if (${n} > ${size}) {
+                        exit 0;
+                }
+        }
+        if (${flag}) {
+                print $_;
+        }
+        if(/^---+---$/){
+                ${flag}=0;
+                #print "close flag", $_;
+        } 
+}' $author $size
