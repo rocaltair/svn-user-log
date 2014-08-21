@@ -1,9 +1,14 @@
 #!/bin/sh
 
-author=$2
-_size=$3
+argc=$#
+author=$1
+shift
+_size=$1
+shift
 size=${_size:=5}
-svn log -v | perl -e '
+#echo $author, $size
+
+svn log -v $@ | perl -e '
 my $author=shift;
 my $size=shift;
 ${n}=0; 
